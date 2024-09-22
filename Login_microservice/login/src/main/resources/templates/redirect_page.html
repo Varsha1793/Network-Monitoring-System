@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+    <style>
+        .centered {
+            text-align: center;
+        }
+        .left-aligned {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="centered">Welcome to Net Pulse!</h1>
+    <h2 class="left-aligned">Hello, <span th:text="${user.name}"></span></h2>
+    <h3>User ID: <span th:text="${user.id}"></span></h3>
+</body>
+</html>
+
+
+ 
