@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netpulse-Homepage</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="icon" href="/images/logo.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #333639;
+            padding-top: 20px;
+            color: #ffffff;
+            position: fixed;
+            height: 100%;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            color: #adb5bd;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #495057;
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        .sidebar a .fas {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Content */
+        .content {
+            margin-left: 250px;
+            /* Same as sidebar width */
+            padding: 20px;
+            width: calc(100% - 250px);
+            /* Full width minus sidebar width */
+        }
+
+        .logout {
+            background-color: #821131;
+            color: white;
+            padding: 7px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .service_table {
+            margin-left: 10px;
+            margin-right: 10px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .sidebar {
+                width: 180px;
+            }
+
+            .content {
+                margin-left: 180px;
+                width: calc(100% - 180px);
+            }
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: center;
+            /* Aligns items vertically in the center */
+            justify-content: flex-start;
+            /* Aligns items at the start (left side) */
+            padding: 10px;
+            /* Adds padding to prevent items from touching the edges */
+            gap: 10px;
+            /* Adds space between items */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+            font-family: 'Arial', sans-serif;
+            text-align: left;
+            padding-left: 5%;
+            /* Centers the text horizontally */
+        }
+
+        h2 span {
+            color: #c20404;
+            /* Changes the color of the user's name */
+            font-weight: normal;
+            /* Makes the user's name less bold than the greeting */
+        }
+
+        .profile-item {
+            margin: 10px 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #821131;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .plan-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: 3%;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .plan-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .plan-card .plan-name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #5d5f5f;
+        }
+
+        .plan-card .plan-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #c20404;
+            margin-bottom: 20px;
+        }
+
+        .plan-card .plan-details {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #f1f1f1;
+            padding-top: 15px;
+            gap: 30px;
+        }
+
+        .plan-card .detail-item {
+            text-align: center;
+        }
+
+        .plan-card .detail-item p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .logo_img {
+            margin: 10px 10px;
+        }
+
+        .logo_dis {
+            /* Additional styling for the logo container, if needed */
+            /* Example: */
+            margin-bottom: 20px;
+            /* Space below the logo container */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+            <h3>NETPULSE</h3>
+        <a href="#Home"><i class="fas fa-home"></i> Home</a>
+        <a class="nav-link" th:href="@{http://localhost:8083/performance(userId=${user.userId})}"><i
+                class="fas fa-chart-line"></i>Performance</a>
+        <a th:href="@{http://localhost:8084/wifi-details(userId=${user.userId})}"><i class="fas fa-cogs"></i>
+            Configuration</a>
+        <a th:href="@{http://localhost:8085/token/user(userId=${user.userId})}"><i class="fas fa-headset"></i>
+            Support</a>
+        <a th:href="@{http://localhost:8081/login}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+    </div>
+
+    <div class="content">
+        <h2>Hi, <span th:text="${user.userName}"></span></h2>
+        <div class="plan-card">
+
+            <div class="profile-item">
+                <i class="fas fa-phone"></i> <label>Phone Number:</label>
+                <span th:text="${user.phoneNumber != null ? user.phoneNumber : 'N/A'}"></span>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-envelope"></i> <label>Email:</label>
+                <span th:text="${user.emailId != null ? user.emailId : 'N/A'}"></span>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-map-marker-alt"></i> <label>Current Address:</label>
+                <span th:text="${user.address != null ? user.address : 'N/A'}"></span>
+            </div>
+        </div>
+        <div class="flex-container">
+            <div class="plan-card">
+                <h2>Your Current Plan</h2>
+                <p class="plan-name" th:text="${plans.planName}"></p>
+                <p class="plan-price">₹<span th:text="${plans.price}"></span></p>
+                <div class="plan-details">
+                    <div class="detail-item">
+                        <p>Data Limit</p>
+                        <p><span th:text="${plans.dataLimit}"></span>GB/day</p>
+                    </div>
+                    <div class="detail-item">
+                        <p>Calls</p>
+                        <p>Unlimited</p>
+                    </div>
+                    <div class="detail-item">
+                        <p>SMS</p>
+                        <p><span th:text="${plans.sms}"></span> SMS/day</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plan-card ">
+                <h2>Bill Details</h2>
+                <p class="plan-name">Amount Payable</p>
+                <p class="plan-price">₹0.00</p>
+                <div class="plan-details">
+                    <div class="detail-item">
+                        <p>Bill Generated On</p>
+                        <p><span th:text="${#temporals.format(services.startDate, 'MMM dd, yyyy')}"></span></p>
+                    </div>
+                    <div class="detail-item">
+                        <p>Bill Due Date</p>
+                        <p><span th:text="${#temporals.format(services.expiryDate, 'MMM dd, yyyy')}"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

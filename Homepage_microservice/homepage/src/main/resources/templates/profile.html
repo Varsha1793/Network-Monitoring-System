@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .profile-item {
+            margin: 10px 0;
+        }
+        label {
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background-color:#821131;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+
+        <div class="profile-item">
+            <label>Name:</label>
+            <span th:text="${user.userName != null ? user.userName : 'N/A'}"></span>
+        </div>
+        <div class="profile-item">
+            <label>Phone Number:</label>
+            <span th:text="${user.phoneNumber != null ? user.phoneNumber : 'N/A'}"></span>
+        </div>
+        <div class="profile-item">
+            <label>Email:</label>
+            <span th:text="${user.emailId != null ? user.emailId : 'N/A'}"></span>
+        </div>
+        <div class="profile-item">
+            <label>Current Address:</label>
+            <span th:text="${user.address != null ? user.address : 'N/A'}"></span>
+        </div>
+
+        <!-- Back to Home Button -->
+        <a th:href="@{/homepage(userId=${user.userId})}">
+            <button>Back to Home</button>
+        </a>
+    </div>
+</body>
+</html>
