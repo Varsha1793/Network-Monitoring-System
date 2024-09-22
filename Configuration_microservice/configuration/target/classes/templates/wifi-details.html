@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <title>Wi-Fi Details</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        /* Use flexbox to manage the layout */
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      form {
+        max-width: 500px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      div {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 75%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+        margin-right: 40px;
+      }
+
+      button {
+        background-color: #090a09;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button[type="submit"] {
+        background-color: #54595e;
+      }
+
+      button:hover {
+        opacity: 0.8;
+      }
+
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        background-color: #333639;
+        padding-top: 20px;
+        color: #ffffff;
+        position: fixed;
+        height: 100%;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .sidebar h3 {
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+
+      .sidebar a {
+        color: #adb5bd;
+        padding: 15px 20px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        transition: all 0.3s;
+      }
+
+      .sidebar a:hover {
+        background-color: #495057;
+        color: #ffffff;
+        transform: translateX(5px);
+      }
+
+      .sidebar a .fas {
+        margin-right: 10px;
+        font-size: 18px;
+      }
+
+      /* Content */
+      .content {
+        margin-left: 250px;
+        padding: 20px;
+        flex-grow: 1;
+        /* Ensures the content takes up the remaining space */
+      }
+
+      .logout {
+        background-color: #821131;
+        color: white;
+        padding: 7px 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+        width: 100%;
+        margin-top: auto;
+      }
+
+      /* Table styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f4f4f4;
+        color: #333;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:hover {
+        background-color: #eaeaea;
+      }
+
+      td.hidden {
+        display: none;
+      }
+
+      /* Delete button styling */
+      .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .delete-btn:hover {
+        background-color: #c0392b;
+      }
+
+      .delete-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      /* Content */
+      .content {
+            margin-left: 250px;
+            /* Same as sidebar width */
+            padding: 20px;
+            width: calc(100% - 250px);
+            /* Full width minus sidebar width */
+        }
+
+        .logout {
+            background-color: #821131;
+            color: white;
+            padding: 7px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+    </style>
+    <script>
+      function enableEdit(fieldId, buttonId) {
+        document.getElementById(fieldId).removeAttribute("readonly");
+        document.getElementById(buttonId).style.display = "none";
+        document.getElementById(fieldId + "SaveBtn").style.display = "inline";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h3>NETPULSE</h3>
+      <a
+        th:href="@{http://localhost:8082/homepage(userId=${wifiDetails.userId})}"
+      >
+        <i class="fas fa-home"></i>Home</a
+      >
+      <a
+        class="nav-link"
+        th:href="@{http://localhost:8083/performance(userId=${wifiDetails.userId})}"
+        ><i class="fas fa-chart-line"></i>Performance</a
+      >
+      <a
+        th:href="@{http://localhost:8084/wifi-details(userId=${wifiDetails.userId})}"
+        ><i class="fas fa-cogs"></i> Configuration</a
+      >
+      <a
+        th:href="@{http://localhost:8085/token/user(userId=${wifiDetails.userId})}"
+        ><i class="fas fa-headset"></i> Support</a
+      >
+      <a th:href="@{http://localhost:8081/login}"
+        ><i class="fas fa-sign-out-alt"></i>Logout</a
+      >
+    </div>
+    <div class="content">
+      <h1>Configuration Details</h1>
+
+      <form id="wifiForm" th:action="@{/wifi-details/update}" method="post">
+        <!-- Hidden field to hold the Wi-Fi ID -->
+        <input
+          type="hidden"
+          id="wifiId"
+          name="wifiId"
+          th:value="${wifiDetails.wifiId}"
+        />
+
+        <!-- Hidden field to hold the User ID -->
+        <input
+          type="hidden"
+          id="userId"
+          name="userId"
+          th:value="${wifiDetails.userId}"
+        />
+
+        <div>
+          <label for="wifiName">Wi-Fi Name</label>
+          <input
+            type="text"
+            id="wifiName"
+            name="wifiName"
+            th:value="${wifiDetails.wifiName}"
+            readonly
+          />
+          <button
+            type="button"
+            id="wifiNameEditBtn"
+            onclick="enableEdit('wifiName', 'wifiNameEditBtn')"
+          >
+            Edit
+          </button>
+          <button type="submit" id="wifiNameSaveBtn" style="display: none">
+            Save
+          </button>
+        </div>
+        <br />
+        <div>
+          <label for="wifiPassword">Wi-Fi Password</label>
+          <input
+            type="text"
+            id="wifiPassword"
+            name="wifiPassword"
+            th:value="${wifiDetails.wifiPassword}"
+            readonly
+          />
+          <button
+            type="button"
+            id="wifiPasswordEditBtn"
+            onclick="enableEdit('wifiPassword', 'wifiPasswordEditBtn')"
+          >
+            Edit
+          </button>
+          <button type="submit" id="wifiPasswordSaveBtn" style="display: none">
+            Save
+          </button>
+        </div>
+      </form>
+
+      <h1>Connected Devices</h1>
+      <!-- Device List Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Device ID</th>
+            <th>Device Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="device : ${deviceList}">
+            <td th:text="${device.deviceId}"></td>
+            <td th:text="${device.deviceName}"></td>
+            <td class="hidden">
+              <input type="hidden" th:value="${device.userId}" />
+            </td>
+
+            <!-- Hidden status field -->
+            <td class="hidden">
+              <input type="hidden" th:value="${device.status}" />
+            </td>
+
+            <!-- Delete Button -->
+            <td>
+              <form
+                th:action="@{/device/delete/{deviceId}/{userId}(deviceId=${device.deviceId},userId=${wifiDetails.userId})}"
+                method="post"
+              >
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
