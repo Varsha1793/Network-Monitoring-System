@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* Navigation bar styling */
+        .navbar {
+            background-color: #f2f2f2;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo img {
+            height: 50px; /* Adjust the height as needed */
+            width: 50;
+        }
+
+        .navbar .logout-button {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .navbar .logout-button:hover {
+            background-color: #c9302c;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 8px; /* Rounded corners for the table */
+            overflow: hidden; /* Ensures corners are rounded */
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #000000; /* Black background for header */
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover td {
+            background-color: #e0e0e0;
+        }
+
+        /* Button styling */
+        .status-button {
+            padding: 8px 12px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 5px;
+        }
+
+        .status-button.active {
+            background-color: #040c15;
+            color: white;
+        }
+
+        .status-button:hover {
+            background-color: #181b1f;
+            color: white;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-top: 40px;
+        }
+    </style>
+    <script>
+        function updateStatus(button, tokenId) {
+            button.innerText = "Accept";
+            button.classList.add("active");
+            button.disabled = true;
+
+            console.log(`/updateStatus/${tokenId}`);
+
+            fetch(`/updateStatus/${tokenId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: true })
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Status updated successfully');
+                    window.location.reload();
+                } else {
+                    console.error('Failed to update status');
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="logo">
+        <img src="/images/logo.png" alt="Logo">
+    </div>
+    <a class="logout-button" th:href="@{http://localhost:8081/login}">Logout</a>
+</div>
+
+<h2>Pending Tokens...</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Token Id</th>
+            <th>User Id</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}" th:if="!${user.status}">
+            <td th:text="${user.tokenId}"></td>
+            <td th:text="${user.userId}"></td>
+            <td th:text="${user.category}"></td>
+            <td th:text="${user.description}"></td>
+            <td>
+                <button class="status-button" 
+                        th:text="${user.status ? 'Accept' : 'Pending'}" 
+                        th:classappend="${user.status ? ' active' : ''}" 
+                        th:disabled="${user.status}" 
+                        th:onclick="'updateStatus(this, \'' + ${user.tokenId} + '\')'">
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Already Responded</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Token Id</th>
+            <th>User Id</th>
+            <th>Category</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}" th:if="${user.status}">
+            <td th:text="${user.tokenId}"></td>
+            <td th:text="${user.userId}"></td>
+            <td th:text="${user.category}"></td>
+            <td th:text="${user.description}"></td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

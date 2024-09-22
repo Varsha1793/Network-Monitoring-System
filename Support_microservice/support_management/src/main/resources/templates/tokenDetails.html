@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>User Token Details</title>
+    <link rel="icon" href="/images/logo.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        display: flex; /* Allows sidebar and content to be aligned next to each other */
+      }
+
+      .sidebar {
+        width: 250px;
+        background-color: #333639;
+        padding-top: 20px;
+        color: #ffffff;
+        position: fixed;
+        height: 100%;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+      }
+
+      .sidebar h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+
+      .sidebar a {
+        color: #adb5bd;
+        padding: 15px 20px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s;
+      }
+
+      .sidebar a:hover {
+        background-color: #495057;
+        color: #ffffff;
+        transform: translateX(5px);
+      }
+
+      .sidebar a .fas {
+        margin-right: 10px;
+        font-size: 18px;
+      }
+
+      .container {
+        margin-left: 250px; /* Makes room for the sidebar */
+        padding: 20px;
+        width: calc(100% - 250px); /* Ensures content takes up the remaining width */
+        box-sizing: border-box; /* Includes padding in the element's width */
+      }
+
+      table {
+        width: 100%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 8px; /* Rounded corners for the table */
+        overflow: hidden; /* Ensures corners are rounded */
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #000000; /* Black background for header */
+        color: white;
+      }
+
+      td {
+        background-color: #f9f9f9;
+      }
+
+      tr:nth-child(even) td {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover td {
+        background-color: #e0e0e0;
+      }
+
+      .button-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #0c0c0c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #181b1f;
+      }
+
+      button:active {
+        background-color: #040c15;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      p {
+        text-align: center;
+        color: #d9534f;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+        background-color: #f2dede;
+        border: 1px solid #ebccd1;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h3>NETPULSE</h3>
+      <a th:href="@{http://localhost:8082/homepage(userId=${user_id})}"><i class="fas fa-home"></i> Home</a>
+      <a class="nav-link" th:href="@{http://localhost:8083/performance(userId=${user_id})}"><i class="fas fa-chart-line"></i>Performance</a>
+      <a th:href="@{http://localhost:8084/wifi-details(userId=${user_id})}"><i class="fas fa-cogs"></i> Configuration</a>
+      <a th:href="@{http://localhost:8085/token/user(userId=${user_id})}"><i class="fas fa-headset"></i> Support</a>
+      <a th:href="@{http://localhost:8081/login}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+    </div>
+    <div class="container">
+      <div th:unless="${token}">
+        <p th:text="${error}"></p>
+      </div>
+      <div th:if="${token}">
+        <table border="1">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Token ID</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="tokens : ${token}">
+              <td th:text="${tokens.userId}"></td>
+              <td th:text="${tokens.tokenId}"></td>
+              <td th:text="${tokens.category}"></td>
+              <td th:text="${tokens.description}"></td>
+              <td th:text="${tokens.status ? 'Successful' : 'Pending'}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="button-container">
+        <form action="/item/create" method="get">
+          <input type="hidden" name="user_id" th:value="${user_id}" />
+          <button type="submit">Raise Token</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
